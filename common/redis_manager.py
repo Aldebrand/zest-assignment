@@ -1,19 +1,22 @@
-import redis
 import json
+import redis
 from redis.exceptions import RedisError, ConnectionError
+from flask import current_app as app
 
-from app.config import REDIS_HOST, REDIS_PORT
-from app.app_logging import logger
+from .app_logging import logger
+
 
 def create_redis_client():
     """
     Create Redis client instance.
-    
+
     Returns:
         redis.Redis or None: Redis client instance if connection is successful, otherwise None.
     """
     try:
-        redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT)
+        host = app.config['REDIS_HOST']
+        port = app.config['REDIS_PORT']
+        redis_client = redis.Redis(host=host, port=port)
 
         # Check if client can connect
         redis_client.ping()
@@ -25,6 +28,7 @@ def create_redis_client():
         logger.error(f"Failed to create Redis client. Error: {e}")
 
         return None
+
 
 def get_from_cache(client, key):
     """
@@ -52,11 +56,12 @@ def get_from_cache(client, key):
         logger.error(f"Failed to decode cached data. Error: {e}")
 
         return None
-    
+
+
 def set_in_cache(client, key, data, ex):
     """
     Set data in Redis cache.
-    
+
     Args:
         client (redis.Redis): Redis client instance.
         key (str): Key to set data in Redis cache.
@@ -65,16 +70,17 @@ def set_in_cache(client, key, data, ex):
     """
     try:
         serialized_data = json.dumps(data)
-        client.set(key,serialized_data, ex=ex)
+        client.set(key, serialized_data, ex=ex)
     except RedisError as e:
         logger.error(f"Failed to set data in cache. Error: {e}")
     except json.JSONDecodeError as e:
         logger.error(f"Failed to encode data to cache. Error: {e}")
 
+
 def close_redis_client(client):
     """
     Close Redis client connection.
-    
+
     Args:
         client (redis.Redis): Redis client instance.
     """

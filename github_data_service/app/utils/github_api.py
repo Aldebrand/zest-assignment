@@ -1,12 +1,9 @@
 import requests
-import json
+from flask import current_app as app
 
-from app.config import GITHUB_API_SEARCH_REPOS_URL, CACHE_EX
-from app.app_logging import logger
+from .app_logging import logger
 from redis_manager import create_redis_client, get_from_cache, set_in_cache, close_redis_client
 
-
-import requests
 
 def create_session(token=None):
     """
@@ -26,21 +23,24 @@ def create_session(token=None):
 
     return session
 
+
 def get_top_100_repos_by_stars(session, sort_by='stars', order='desc', per_page=100):
     redis_client = create_redis_client()
     cache_key = f"top_repos:{sort_by}:{order}:{per_page}"
 
-    if  redis_client:
+    if redis_client:
         print('here')
         data = get_from_cache(redis_client, cache_key)
-        
+
         if data:
             logger.info(f"Retrieved top 100 repos by stars from cache")
 
             return data
-    
-    params = {'q': f'stars:>0', 'sort': sort_by, 'order': order, 'per_page': per_page, 'page': 1}
-    response = session.get(GITHUB_API_SEARCH_REPOS_URL, params=params)
+
+    params = {'q': f'stars:>0', 'sort': sort_by,
+              'order': order, 'per_page': per_page, 'page': 1}
+    response = session.get(
+        app.config['GITHUB_API_SEARCH_REPOS_URL'], params=params)
 
     if response.status_code == 200:
         logger.info(f"Retrieved top 100 repos by stars from GitHub API")
@@ -48,12 +48,13 @@ def get_top_100_repos_by_stars(session, sort_by='stars', order='desc', per_page=
 
         if redis_client:
             print(redis_client)
-            set_in_cache(redis_client, cache_key, repositories, CACHE_EX)
+            set_in_cache(redis_client, cache_key,
+                         repositories, app.config['CACHE_EX'])
             logger.info(f"Saved top 100 repos by stars to cache")
             close_redis_client(redis_client)
 
         return repositories
     else:
-        logger.error(f"Failed to retrieve top 100 repos by stars. Status code: {response.status_code}")
+        logger.error(
+            f"Failed to retrieve top 100 repos by stars. Status code: {response.status_code}")
         return []
-    
