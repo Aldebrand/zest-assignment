@@ -8,8 +8,15 @@ github_routes = Blueprint('github_routes', __name__)
 @github_routes.route('/top-starred-repositories')
 def top_starred_repositories():
     """
-    Returns the top 100 repositories on GitHub sorted by stars.
+    Retrieves the top 100 repositories by stars from the database and returns them as a JSON response.
+
+    Returns:
+        A Flask response object containing a JSON representation of the top 100 repositories by stars.
+
+    Raises:
+        HTTPException: If there is an internal server error while retrieving the repositories.
     """
+    
     try:
         with create_session() as session:
             repositories = get_top_100_repos_by_stars(session)
