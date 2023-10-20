@@ -1,6 +1,6 @@
-from pymongo import MongoClient
 from flask import current_app as app
-from utils.db_manager import get_collection, get_database, close_client, get_client
+
+from utils.db_manager import get_collection, get_database, close_client, create_mongo_client
 from utils.app_logging import logger
 
 
@@ -21,7 +21,7 @@ def save_user_to_db(email, password):
     users_collection_name = app.config['USERS_COLLECTION']
 
     try:
-        client = get_client(db_uri)
+        client = create_mongo_client(db_uri)
         db = get_database(client, db_name)
         collection = get_collection(db, users_collection_name)
 
@@ -59,7 +59,7 @@ def get_user_from_db(email):
     users_collection_name = app.config['USERS_COLLECTION']
 
     try:
-        client = get_client(db_uri)
+        client = create_mongo_client(db_uri)
         db = get_database(client, db_name)
         collection = get_collection(db, users_collection_name)
 
