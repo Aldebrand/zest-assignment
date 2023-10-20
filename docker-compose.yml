@@ -3,8 +3,8 @@ version: '3.7'
 services:
   github_data_service:
     build:
-      context: ./github_api_service
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: github_data_service/Dockerfile
     environment:
       - HOST=0.0.0.0
       - PORT=8080
