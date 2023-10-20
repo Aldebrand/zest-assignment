@@ -20,6 +20,8 @@ def create_redis_client():
 
         # Check if client can connect
         redis_client.ping()
+
+        return redis_client
     except (ConnectionError, ConnectionRefusedError) as e:
         logger.error(f"Failed to connect to Redis server. Error: {e}")
 
