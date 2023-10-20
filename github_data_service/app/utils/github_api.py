@@ -1,8 +1,8 @@
 import requests
 from flask import current_app as app
 
-from app.utils.app_logging import logger
-from app.utils.redis_manager import create_redis_client, get_from_cache, set_in_cache, close_redis_client
+from utils.app_logging import logger
+from utils.redis_manager import create_redis_client, get_from_cache, set_in_cache, close_redis_client
 
 
 def _get_repositories_from_github(session, sort_by, order, per_page):
@@ -38,8 +38,8 @@ def _get_repositories_from_github(session, sort_by, order, per_page):
 
         for repo in data:
             repositories.append({
-                'name': repo['name'],
                 'id': repo['id'],
+                'name': repo['name'],
                 'stars': repo['stargazers_count'],
                 'clone_url': repo['clone_url'],
                 'url': repo['url']
