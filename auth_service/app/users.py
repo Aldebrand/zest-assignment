@@ -1,11 +1,12 @@
 import bcrypt
 import jwt
+import os
 
 from utils.users_db import save_user_to_db, get_user_from_db
 from utils.app_logging import logger
 
-# This is just an example secret key, in production you should use a more secure one
-SECRET_KEY = "mysecretkey"
+# get the secret key from the environment variables
+SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
 
 
 def signup_user(email, password):
@@ -19,7 +20,6 @@ def signup_user(email, password):
     Returns:
         str: A JWT token with the user ID if the user was successfully signed up, None otherwise.
     """
-    
     # Hash the password using bcrypt
     hashed_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
 
@@ -31,6 +31,7 @@ def signup_user(email, password):
         return None
 
     # Create a JWT token with the user ID
+    user_id = str(user_id)
     token = jwt.encode({"user_id": user_id}, SECRET_KEY, algorithm="HS256")
     logger.info(f'jwt token for user - {user_id} created')
 
@@ -48,15 +49,15 @@ def login_user(email, password):
     Returns:
         str: A JWT token if the email and password match, None otherwise.
     """
-    
     # Get the user from the database
     user = get_user_from_db(email)
 
     # Check if the password matches the hashed password in the database
-    if bcrypt.checkpw(password.encode(), user.hashed_password):
+    if bcrypt.checkpw(password.encode(), user['password']):
         # Create a JWT token with the user ID
-        token = jwt.encode({"user_id": user.id}, SECRET_KEY, algorithm="HS256")
-        logger.info(f'jwt token for user - {user.id} created')
+        user_id = str(user['_id'])
+        token = jwt.encode({"user_id": user_id}, SECRET_KEY, algorithm="HS256")
+        logger.info(f'jwt token for user - {user_id} created')
 
         return token
 
