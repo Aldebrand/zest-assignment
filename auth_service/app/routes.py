@@ -1,9 +1,11 @@
 from flask import Blueprint, request, jsonify
+
 from users import login_user, signup_user
 
 auth_routes = Blueprint('auth_routes', __name__)
 
-auth_routes.route('/login', methods=['POST'])
+
+@auth_routes.route('/login', methods=['POST'])
 def login():
     """
     Logs in a user with the provided email and password.
@@ -23,9 +25,10 @@ def login():
     if not jwt_token:
         return jsonify({'error': 'Invalid email or password'}), 401
 
-    return jsonify({'message': f"You've successfuly logged in"}), 200
+    return jsonify({'message': f"You've successfuly logged in", 'jwt_token': jwt_token}), 200
 
-auth_routes.route('/signup', methods=['POST'])
+
+@auth_routes.route('/signup', methods=['POST'])
 def signup():
     """
     Signs up a new user with the provided email and password.
@@ -35,7 +38,7 @@ def signup():
         If the email or password is missing, returns a 400 error.
         If the user already exists, returns a 409 error.
     """
-    
+
     email = request.json.get('email')
     password = request.json.get('password')
 
@@ -47,5 +50,4 @@ def signup():
     if jwt_token is None:
         return jsonify({'error': 'User is already exists'}), 409
 
-
-    return jsonify({'message': 'User created successfully'}), 201
+    return jsonify({'message': 'User created successfully', 'jwt_token': jwt_token}), 201
