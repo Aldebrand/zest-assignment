@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from pymongo.errors import ConnectionError, PyMongoError
+from pymongo.errors import PyMongoError
 from utils.app_logging import logger
 
 
