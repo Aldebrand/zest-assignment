@@ -3,7 +3,7 @@ import json
 from redis.exceptions import RedisError, ConnectionError
 
 from app.config import REDIS_HOST, REDIS_PORT
-from .app_logging import logger
+from app.utils.app_logging import logger
 
 
 def create_redis_client():
