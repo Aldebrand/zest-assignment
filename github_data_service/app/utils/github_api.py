@@ -1,5 +1,4 @@
 import requests
-import codecs
 from flask import current_app as app
 
 from utils.app_logging import logger
@@ -31,7 +30,7 @@ def _get_repositories_from_github(session, sort_by, order, per_page):
         repositories = []
 
         for repo in data:
-            owner_data =  repo['owner']
+            owner_data = repo['owner']
             owner = {
                 'id': owner_data['id'],
                 'login': owner_data['login'],
