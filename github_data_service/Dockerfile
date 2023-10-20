@@ -2,12 +2,14 @@ FROM python:3.8-slim-buster
 
 WORKDIR /app
 
-COPY requirements.txt .
+RUN mkdir -p ./logs
+
+COPY github_data_service/requirements.txt .
 
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-COPY common/ app/utils/
+COPY github_data_service/app .
 
-COPY . .
+COPY ./common ./utils/
 
 CMD [ "python3", "run.py" ]
