@@ -26,48 +26,32 @@ services:
     build:
       context: ./
       dockerfile: auth_service/Dockerfile
+    env_file:
+      - ./env_files/auth.env
     environment:
       - HOST=0.0.0.0
       - PORT=8081
+    ports: 
+      - "8081:8081"
     depends_on:
       - mongodb
     networks:
-      - favorites_network
-
-  favorites_service:
-    build:
-      context: ./
-      dockerfile: favorites_service/Dockerfile
-    environment:
-      - HOST=0.0.0.0
-      - PORT=8082
-    depends_on:
-      - mongodb
-    networks:
-      - favorites_network
+      - app_network
 
   mongodb:
     image: mongo:latest
-    secrets:
-      - mongo_root_username
-      - mongo_root_password
+    env_file:
+      - ./env_files/mongo.env
     volumes:
       - mongo_data:/data/db
     networks:
-      - favorites_network
+      - app_network
 
 networks:
-  zest_network:
+  github_network:
     driver: bridge
-  favorites_network:
+  app_network:
     driver: bridge
 
 volumes:
   mongo_data:
-
-
-secrets:
-  mongo_root_username:
-    external: true
-  mongo_root_password:
-    external: true
