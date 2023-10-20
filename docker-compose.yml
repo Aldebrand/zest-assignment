@@ -13,15 +13,61 @@ services:
     depends_on:
       - redis
     networks:
-      - zest_network
+      - github_network
 
   redis:
     image: redis:latest
     ports:
       - "6379:6379"
     networks:
-      - zest_network
+      - github_network
+
+  auth_service:
+    build:
+      context: ./
+      dockerfile: auth_service/Dockerfile
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8081
+    depends_on:
+      - mongodb
+    networks:
+      - favorites_network
+
+  favorites_service:
+    build:
+      context: ./
+      dockerfile: favorites_service/Dockerfile
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8082
+    depends_on:
+      - mongodb
+    networks:
+      - favorites_network
+
+  mongodb:
+    image: mongo:latest
+    secrets:
+      - mongo_root_username
+      - mongo_root_password
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - favorites_network
 
 networks:
   zest_network:
     driver: bridge
+  favorites_network:
+    driver: bridge
+
+volumes:
+  mongo_data:
+
+
+secrets:
+  mongo_root_username:
+    external: true
+  mongo_root_password:
+    external: true
