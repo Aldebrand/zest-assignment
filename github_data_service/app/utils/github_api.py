@@ -7,25 +7,18 @@ from utils.redis_manager import create_redis_client, get_from_cache, set_in_cach
 
 def _get_repositories_from_github(session, sort_by, order, per_page):
     """
-    Retrieves a list of repositories from the GitHub API, sorted by the given criteria.
+    Retrieves top repositories from GitHub API based on the given parameters.
 
     Args:
-        session (requests.Session): The session to use for the API request.
-        sort_by (str): The field to sort the repositories by.
-        order (str): The order to sort the repositories in ('asc' or 'desc').
-        per_page (int): The number of repositories to retrieve per page.
+        session (requests.Session): A session object used to make HTTP requests.
+        sort_by (str): The field to sort the results by.
+        order (str): The order to sort the results in (asc or desc).
+        per_page (int): The number of results to return per page.
 
     Returns:
-        list: A list of dictionaries, each representing a repository. Each dictionary contains the following keys:
-            - name (str): The name of the repository.
-            - id (int): The ID of the repository.
-            - stars (int): The number of stars the repository has.
-            - clone_url (str): The URL to clone the repository.
-            - url (str): The URL to the repository on GitHub.
-
-        If the API request fails, an empty list is returned.
+        list: A list of dictionaries representing the retrieved repositories.
     """
-
+    
     params = {'q': f'stars:>0', 'sort': sort_by,
               'order': order, 'per_page': per_page, 'page': 1}
     response = session.get(
@@ -40,9 +33,21 @@ def _get_repositories_from_github(session, sort_by, order, per_page):
             repositories.append({
                 'id': repo['id'],
                 'name': repo['name'],
-                'stars': repo['stargazers_count'],
+                'description': repo['description'].decode('unicode_escape'),
+                'owner': repo['owner'],
+                'html_url': repo['html_url'],
                 'clone_url': repo['clone_url'],
-                'url': repo['url']
+                'language': repo['language'],
+                'topics': repo['topics'],
+                'stargazers_count': repo['stargazers_count'],
+                'forks_count': repo['forks_count'],
+                'created_at': repo['created_at'],
+                'updated_at': repo['updated_at'],
+                'pushed_at': repo['pushed_at'],
+                'archived': repo['archived'],
+                'visibility': repo['visibility'],
+                'watchers_count': repo['watchers_count'],
+                'open_issues_count': repo['open_issues_count']
             })
 
         return repositories
