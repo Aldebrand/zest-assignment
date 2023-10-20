@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+
 from routes import auth_routes
 
 app = Flask(__name__)
