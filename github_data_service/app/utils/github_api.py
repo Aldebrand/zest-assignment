@@ -47,7 +47,7 @@ def _get_repositories_from_github(session, sort_by, order, per_page):
                 'clone_url': repo['clone_url'],
                 'language': repo['language'],
                 'topics': repo['topics'],
-                'stargazers_count': repo['stargazers_count'],
+                'stars': repo['stargazers_count'],
                 'forks_count': repo['forks_count'],
                 'created_at': repo['created_at'],
                 'updated_at': repo['updated_at'],
