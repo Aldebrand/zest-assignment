@@ -1,4 +1,5 @@
 import requests
+import codecs
 from flask import current_app as app
 
 from utils.app_logging import logger
@@ -18,7 +19,7 @@ def _get_repositories_from_github(session, sort_by, order, per_page):
     Returns:
         list: A list of dictionaries representing the retrieved repositories.
     """
-    
+
     params = {'q': f'stars:>0', 'sort': sort_by,
               'order': order, 'per_page': per_page, 'page': 1}
     response = session.get(
@@ -30,11 +31,18 @@ def _get_repositories_from_github(session, sort_by, order, per_page):
         repositories = []
 
         for repo in data:
+            owner_data =  repo['owner']
+            owner = {
+                'id': owner_data['id'],
+                'login': owner_data['login'],
+                'avatar_url': owner_data['avatar_url'],
+                'html_url': owner_data['html_url']
+            }
             repositories.append({
                 'id': repo['id'],
                 'name': repo['name'],
-                'description': repo['description'].decode('unicode_escape'),
-                'owner': repo['owner'],
+                'description': repo['description'],
+                'owner': owner,
                 'html_url': repo['html_url'],
                 'clone_url': repo['clone_url'],
                 'language': repo['language'],
