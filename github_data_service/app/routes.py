@@ -1,6 +1,6 @@
 from flask import jsonify, make_response, abort, Blueprint
 from app.utils.github_api import get_top_100_repos_by_stars, create_session
-from .utils.app_logging import logger
+from app.utils.app_logging import logger
 
 github_routes = Blueprint('github_routes', __name__)
 
@@ -16,7 +16,7 @@ def top_starred_repositories():
     Raises:
         HTTPException: If there is an internal server error while retrieving the repositories.
     """
-    
+
     try:
         with create_session() as session:
             repositories = get_top_100_repos_by_stars(session)
