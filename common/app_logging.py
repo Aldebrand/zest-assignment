@@ -1,3 +1,14 @@
+################################################
+# This file contains the logger configuration. #
+# While I chose to use rotating file handler   #
+# for this project, I could have also used     #
+# a logging handler that sends logs to a       #
+# database such as elasticsearch or a logging  #
+# handler that sends logs to a message queue   #
+# such as kafka.                               #
+################################################
+
+
 import logging
 from logging.handlers import RotatingFileHandler
 import sys
