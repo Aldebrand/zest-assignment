@@ -1,0 +1,86 @@
+openapi: 3.0.0
+info:
+  title: GitHub Data Service API
+  version: 1.0.0
+  description: A service for retrieving repository data from GitHub.
+servers:
+  - url: http://localhost:8080  # Adjust this to match your actual server URL
+paths:
+  /top-starred-repositories:
+    get:
+      summary: Get Top 100 Starred Repositories
+      description: Retrieves the top 100 repositories by stars from the database.
+      responses:
+        200:
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Repository'
+        500:
+          description: Internal server error.
+components:
+  schemas:
+    Repository:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        owner:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+            login:
+              type: string
+            avatar_url:
+              type: string
+              format: uri
+            html_url:
+              type: string
+              format: uri
+        html_url:
+          type: string
+          format: uri
+        clone_url:
+          type: string
+          format: uri
+        language:
+          type: string
+        topics:
+          type: array
+          items:
+            type: string
+        stars:
+          type: integer
+          format: int32
+        forks_count:
+          type: integer
+          format: int32
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        pushed_at:
+          type: string
+          format: date-time
+        archived:
+          type: boolean
+        visibility:
+          type: string
+        watchers_count:
+          type: integer
+          format: int32
+        open_issues_count:
+          type: integer
+          format: int32

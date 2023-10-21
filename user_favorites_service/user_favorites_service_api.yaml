@@ -1,0 +1,162 @@
+openapi: 3.0.2
+info:
+  title: User Favorites Service API
+  version: 1.0.0
+paths:
+  /favorites:
+    post:
+      summary: Add a repository to a user's favorites list
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                repository:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    archived:
+                      type: boolean
+                    clone_url:
+                      type: string
+                    created_at:
+                      type: string
+                    forks_count:
+                      type: integer
+                    html_url:
+                      type: string
+                    language:
+                      type: string
+                    open_issues_count:
+                      type: integer
+                    owner:
+                      type: object
+                      properties:
+                        avatar_url:
+                          type: string
+                        html_url:
+                          type: string
+                        id:
+                          type: integer
+                        login:
+                          type: string
+                    pushed_at:
+                      type: string
+                    stars:
+                      type: integer
+                    topics:
+                      type: array
+                      items:
+                        type: string
+                    updated_at:
+                      type: string
+                    visibility:
+                      type: string
+                    watchers_count:
+                      type: integer
+        required: true
+      responses:
+        201:
+          description: Repository added to favorites
+        400:
+          description: Missing repository data or repository already exists in favorites
+        401:
+          description: Missing authorization token or invalid authorization token
+        500:
+          description: Failed to add repository to favorites
+
+    delete:
+      summary: Remove a repository from a user's favorites list
+      parameters:
+        - name: repository_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Repository removed from favorites
+        400:
+          description: Missing repository ID or repository does not exist in favorites
+        401:
+          description: Missing authorization token or invalid authorization token
+        500:
+          description: Failed to remove repository from favorites
+
+    get:
+      summary: Retrieves the favorite repositories of a user
+      responses:
+        200:
+          description: A list of favorite repositories
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  favorite_repos:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        repository_id:
+                          type: integer
+                        repository:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            name:
+                              type: string
+                            description:
+                              type: string
+                            archived:
+                              type: boolean
+                            clone_url:
+                              type: string
+                            created_at:
+                              type: string
+                            forks_count:
+                              type: integer
+                            html_url:
+                              type: string
+                            language:
+                              type: string
+                            open_issues_count:
+                              type: integer
+                            owner:
+                              type: object
+                              properties:
+                                avatar_url:
+                                  type: string
+                                html_url:
+                                  type: string
+                                id:
+                                  type: integer
+                                login:
+                                  type: string
+                            pushed_at:
+                              type: string
+                            stars:
+                              type: integer
+                            topics:
+                              type: array
+                              items:
+                                type: string
+                            updated_at:
+                              type: string
+                            visibility:
+                              type: string
+                            watchers_count:
+                              type: integer
+                        added_at:
+                          type: string
+        401:
+          description: Missing authorization token or invalid authorization token
+        500:
+          description: Failed to retrieve favorite repositories
