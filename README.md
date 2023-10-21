@@ -86,7 +86,7 @@ This project is submitted as a solution to the Zest Home Assignment, following t
 
 Certainly! Here's the refined version of your notes formatted in Markdown:
 
-### Considerations:
+## Considerations:
 
 1. **Logging Infrastructure**:
    - In this project, a conventional logging setup with a rotating file handler is utilized. However, in a production environment, it's prudent to employ a robust logging service. A setup that writes logs to Elastic Search and optionally connects to an event bus like Kafka to capture and log events across services would be ideal. This exercise was time-bound which necessitated a focus on the core functionality, hence a simpler logging setup was adopted.
