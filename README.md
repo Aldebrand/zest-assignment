@@ -4,13 +4,32 @@ Welcome to the GitHub Repository Manager application! This application allows us
 
 ---
 
-## Architecture
+## Architecture:
 
-The application adopts a microservices architecture, dividing the business logic into three distinct services:
+The application is structured following a microservices architecture, partitioning the business logic into three distinct, independently deployable services, each with its own defined functionality and responsibility:
 
-1. **GitHub Data Service**: Fetches and provides data from the GitHub API.
-2. **Authentication Service**: Manages user authentication.
-3. **User Favorites Service**: Manages user's favorite repositories.
+1. **GitHub Data Service**: 
+   - Responsible for fetching and providing data from the GitHub API.
+   - Utilizes Redis for caching the top 100 starred repositories, capitalizing on the infrequent changes in this data set to optimize response times and reduce the load on the GitHub API. The cache expiration time is configurable within the GitHub Data Service settings to cater to different data freshness requirements.
+
+2. **Authentication Service**: 
+   - Manages user authentication, ensuring secure and streamlined user access.
+
+3. **User Favorites Service**: 
+   - Manages the user's favorite repositories, providing a personalized experience.
+
+In addition to the aforementioned services, this project leverages two key data management technologies:
+
+- **Redis**: 
+   - Employed to cache the top 100 starred repositories, thereby significantly enhancing the application's performance. Redis was chosen for its high-speed data access, simplicity, and the value it provides in scenarios where data changes are less frequent.
+
+- **MongoDB**: 
+   - Selected as the primary database due to its flexibility and capability to efficiently handle the data types present in this project, which mainly revolve around repository data from the GitHub API, and user data including emails and passwords. 
+   - The project utilizes two collections within MongoDB; one for users and another for storing the favorite repositories against user IDs. The schema-less, document-oriented nature of MongoDB is particularly beneficial in this scenario as it allows for straightforward storage and retrieval of diverse repository data alongside user data, all while maintaining a clean and understandable data model.
+   - MongoDB's ability to handle evolving data models is advantageous as it supports potential future enhancements to the application, such as incorporating additional data fields from the GitHub API or extending user profile information.
+   - Furthermore, MongoDB provides the necessary tools for scaling the database horizontally, ensuring the application remains performant and resilient as data and user loads grow over time.
+
+The combination of Redis for caching and MongoDB for persistent data storage provides a balanced data management solution, aligning with the microservices architecture to promote scalability, performance, and maintainability.
 
 ## Pre-requisites
 
