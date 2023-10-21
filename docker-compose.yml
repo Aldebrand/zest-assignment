@@ -15,7 +15,7 @@ services:
       - redis
     networks:
       - app_network
-    
+
   # Responsible for managing user's authentication
   auth_service:
     build:
@@ -26,7 +26,7 @@ services:
     environment:
       - HOST=0.0.0.0
       - PORT=8081
-    ports: 
+    ports:
       - "8081:8081"
     depends_on:
       - mongodb
@@ -51,8 +51,6 @@ services:
       - auth_service
     networks:
       - app_network
-  
-  
 
   redis:
     image: redis:latest
