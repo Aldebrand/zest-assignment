@@ -8,7 +8,6 @@ from utils.app_logging import logger
 
 # get the secret key from the environment variables
 SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
-JWT_ALGORITHM = app.config["JWT_ALGORITHM"]
 
 def signup_user(email, password):
     """
@@ -33,7 +32,7 @@ def signup_user(email, password):
 
     # Create a JWT token with the user ID
     user_id = str(user_id)
-    token = jwt.encode({"user_id": user_id}, SECRET_KEY, algorithm=JWT_ALGORITHM)
+    token = jwt.encode({"user_id": user_id}, SECRET_KEY, algorithm=app.config["JWT_ALGORITHM"])
     logger.info(f'jwt token for user - {user_id} created')
 
     return token
@@ -53,11 +52,15 @@ def login_user(email, password):
     # Get the user from the database
     user = get_user_from_db(email)
 
+    if user is None:
+        # If the user is None, it means the user doesn't exist
+        return None
+
     # Check if the password matches the hashed password in the database
     if bcrypt.checkpw(password.encode(), user['password']):
         # Create a JWT token with the user ID
         user_id = str(user['_id'])
-        token = jwt.encode({"user_id": user_id}, SECRET_KEY, algorithm=JWT_ALGORITHM)
+        token = jwt.encode({"user_id": user_id}, SECRET_KEY, algorithm=app.config["JWT_ALGORITHM"])
         logger.info(f'jwt token for user - {user_id} created')
 
         return token
