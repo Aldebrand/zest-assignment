@@ -84,6 +84,26 @@ Now, all the services should be running, and you can interact with them through 
     - `DELETE /favorites`: Removes a repository from a user's favorites list.
     - `GET /favorites`: Retrieves the favorite repositories of a user.
 
+## Usage Guide:
+
+The application is designed to provide a seamless and intuitive user experience. Here's a step-by-step guide on how to interact with the services:
+
+1. **User Registration and Authentication**:
+   - Your journey begins by signing up through the Authentication Service. 
+   - Once you provide your email and password, you will receive a JWT (JSON Web Token) which remains valid for 12 hours.
+   - This token is crucial for accessing other services securely.
+
+2. **Exploring GitHub Repositories**:
+   - With authentication out of the way, head over to the GitHub Data Service to fetch the top 100 starred repositories on GitHub.
+   - This data is neatly packaged, ready for you to browse through, and discover projects that pique your interest.
+
+3. **Managing Your Favorite Repositories**:
+   - Found some repositories you love? It's time to save them!
+   - Utilize the User Favorites Service to add repositories to your favorites list. You can use the data returned from the GitHub Data Service for this purpose.
+   - You can also remove repositories from your favorites or retrieve your entire favorites list anytime you wish.
+   
+The flow from signing up, to exploring repositories, and finally managing your favorites is designed to be straightforward and user-friendly, allowing you to make the most out of the vast ocean of projects on GitHub.
+
 ## Documentation
 
 The APIs for each service are well-documented using OpenAPI specification. You can find the YAML files describing the API endpoints, request/response formats, and error messages for each service at the following paths:
