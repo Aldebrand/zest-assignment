@@ -19,8 +19,8 @@ The application adopts a microservices architecture, dividing the business logic
 1. Clone the repository to your local machine.
 
     ```bash
-    git clone <repository_url>
-    cd <repository_directory>
+    git clone https://github.com/Aldebrand/zest-assignment.git
+    cd zest-assignment
     ```
 
 2. Create environment files (`mongo.env` and `secrets.env`) in the `env_files` directory with the necessary variables as shown below:
@@ -81,3 +81,11 @@ Dockerfiles have been created for each service, and a Docker Compose file is pro
 ## Submission
 
 This project is submitted as a solution to the Zest Home Assignment, following the specified guidelines and requirements. The source code and related documentation are shared via this Git repository.
+
+---
+
+## Questions or Concerns? 🤔
+
+If you stumble upon any bumps or have some burning questions, feel free to reach out! I'm here to clear the fog and make your journey with this project as smooth as a piece of cake. 🍰 Remember, there's no such thing as a silly question. Hit me up, and let's solve those puzzles together! 🧩🎉
+
+---
