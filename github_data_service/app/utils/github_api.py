@@ -103,10 +103,8 @@ def _get_repositories_from_github(session, sort_by, order, per_page):
                         'open_issues_count': repo['open_issues_count']
                     })
                 except KeyError as e:
-                    logger.error(
-                        f"KeyError: {e} in repo: {repo}. Stop retrieving repos from GitHub API.")
-                    
-                    break
+                    logger.warning(
+                        f"KeyError: {e} in repo: {repo}. Skipping repo.")
         elif response.status_code == 403 and 'X-RateLimit-Remaining' in response.headers \
                 and response.headers['X-RateLimit-Remaining'] == '0':
             logger.error(
@@ -130,7 +128,7 @@ def _get_repositories_from_github(session, sort_by, order, per_page):
             links = response.headers['link'].split(',')
             for link in links:
                 if 'rel="next"' in link:
-                    
+
                     break
             else:
                 break
