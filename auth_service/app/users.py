@@ -1,4 +1,5 @@
 import bcrypt
+import time
 import jwt
 import os
 from flask import current_app as app
@@ -32,7 +33,8 @@ def signup_user(email, password):
 
     # Create a JWT token with the user ID
     user_id = str(user_id)
-    token = jwt.encode({"user_id": user_id}, SECRET_KEY, algorithm=app.config["JWT_ALGORITHM"])
+    experation_time = time.time() + app.config['JWT_TTL']
+    token = jwt.encode({"user_id": user_id, 'exp': experation_time}, SECRET_KEY, algorithm=app.config["JWT_ALGORITHM"])
     logger.info(f'jwt token for user - {user_id} created')
 
     return token
@@ -60,7 +62,8 @@ def login_user(email, password):
     if bcrypt.checkpw(password.encode(), user['password']):
         # Create a JWT token with the user ID
         user_id = str(user['_id'])
-        token = jwt.encode({"user_id": user_id}, SECRET_KEY, algorithm=app.config["JWT_ALGORITHM"])
+        experation_time = time.time() + app.config['JWT_TTL']
+        token = jwt.encode({"user_id": user_id, 'exp': experation_time}, SECRET_KEY, algorithm=app.config["JWT_ALGORITHM"])
         logger.info(f'jwt token for user - {user_id} created')
 
         return token
