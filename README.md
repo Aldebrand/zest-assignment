@@ -84,6 +84,18 @@ Dockerfiles have been created for each service, and a Docker Compose file is pro
 
 This project is submitted as a solution to the Zest Home Assignment, following the specified guidelines and requirements. The source code and related documentation are shared via this Git repository.
 
+Certainly! Here's the refined version of your notes formatted in Markdown:
+
+### Considerations:
+
+1. **Logging Infrastructure**:
+   - In this project, a conventional logging setup with a rotating file handler is utilized. However, in a production environment, it's prudent to employ a robust logging service. A setup that writes logs to Elastic Search and optionally connects to an event bus like Kafka to capture and log events across services would be ideal. This exercise was time-bound which necessitated a focus on the core functionality, hence a simpler logging setup was adopted.
+
+2. **Testing**:
+   - Manual testing was the primary mode of verification due to the time constraints of this exercise. While every effort has been made to ensure the application operates correctly, should any issues arise, I am readily available to address them. The lack of automated testing in this instance is acknowledged, and under different circumstances, a comprehensive suite of tests covering all services and applications would be implemented to guarantee reliability and correctness.
+
+Your understanding and consideration regarding these aspects are greatly appreciated. This project serves as a testament to what can be achieved within a limited timeframe while also highlighting areas for further enhancement in a more expansive development window.
+
 ## Questions or Concerns? 🤔
 
 If you stumble upon any bumps or have some burning questions, feel free to reach out! I'm here to clear the fog and make your journey with this project as smooth as a piece of cake. 🍰 Remember, there's no such thing as a silly question. Hit me up, and let's solve those puzzles together! 🧩🎉
