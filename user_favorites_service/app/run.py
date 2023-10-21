@@ -5,7 +5,7 @@ from routes import favorite_repos_routes
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
-app.register_blueprint(favorite_repos_routes, url_prefix='/favorites')
+app.register_blueprint(favorite_repos_routes)
 
 
 if __name__ == '__main__':
