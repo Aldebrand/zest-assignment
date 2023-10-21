@@ -1,7 +1,10 @@
-openapi: 3.0.0
+openapi: 3.0.2
 info:
   title: Auth Service API
   version: 1.0.0
+  description: A service dedicated to managing user authentication, including login and signup operations.
+servers:
+  - url: http://localhost:8081/auth
 paths:
   /login:
     post:
@@ -33,23 +36,9 @@ paths:
                   jwt_token:
                     type: string
         400:
-          description: Missing email or password
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
+          $ref: '#/components/responses/BadRequest'
         401:
-          description: User does not exist or password and email do not match
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
+          $ref: '#/components/responses/Unauthorized'
 
   /signup:
     post:
@@ -81,20 +70,36 @@ paths:
                   jwt_token:
                     type: string
         400:
-          description: Missing email or password
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
+          $ref: '#/components/responses/BadRequest'
         409:
-          description: User already exists
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
+          $ref: '#/components/responses/Conflict'
+
+components:
+  responses:
+    BadRequest:
+      description: Missing email or password
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+    Unauthorized:
+      description: User does not exist or password and email do not match
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+    Conflict:
+      description: User already exists
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string

@@ -2,6 +2,9 @@ openapi: 3.0.2
 info:
   title: User Favorites Service API
   version: 1.0.0
+  description: A service for managing and retrieving user's favorite GitHub repositories.
+servers:
+  - url: http://localhost:8082
 paths:
   /favorites:
     post:
@@ -10,66 +13,17 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                repository:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    name:
-                      type: string
-                    description:
-                      type: string
-                    archived:
-                      type: boolean
-                    clone_url:
-                      type: string
-                    created_at:
-                      type: string
-                    forks_count:
-                      type: integer
-                    html_url:
-                      type: string
-                    language:
-                      type: string
-                    open_issues_count:
-                      type: integer
-                    owner:
-                      type: object
-                      properties:
-                        avatar_url:
-                          type: string
-                        html_url:
-                          type: string
-                        id:
-                          type: integer
-                        login:
-                          type: string
-                    pushed_at:
-                      type: string
-                    stars:
-                      type: integer
-                    topics:
-                      type: array
-                      items:
-                        type: string
-                    updated_at:
-                      type: string
-                    visibility:
-                      type: string
-                    watchers_count:
-                      type: integer
+              $ref: '#/components/schemas/Repository'
         required: true
       responses:
         201:
           description: Repository added to favorites
         400:
-          description: Missing repository data or repository already exists in favorites
+          $ref: '#/components/responses/BadRequestError'
         401:
-          description: Missing authorization token or invalid authorization token
+          $ref: '#/components/responses/UnauthorizedError'
         500:
-          description: Failed to add repository to favorites
+          $ref: '#/components/responses/InternalServerError'
 
     delete:
       summary: Remove a repository from a user's favorites list
@@ -83,11 +37,11 @@ paths:
         200:
           description: Repository removed from favorites
         400:
-          description: Missing repository ID or repository does not exist in favorites
+          $ref: '#/components/responses/BadRequestError'
         401:
-          description: Missing authorization token or invalid authorization token
+          $ref: '#/components/responses/UnauthorizedError'
         500:
-          description: Failed to remove repository from favorites
+          $ref: '#/components/responses/InternalServerError'
 
     get:
       summary: Retrieves the favorite repositories of a user
@@ -97,66 +51,108 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  favorite_repos:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        repository_id:
-                          type: integer
-                        repository:
-                          type: object
-                          properties:
-                            id:
-                              type: integer
-                            name:
-                              type: string
-                            description:
-                              type: string
-                            archived:
-                              type: boolean
-                            clone_url:
-                              type: string
-                            created_at:
-                              type: string
-                            forks_count:
-                              type: integer
-                            html_url:
-                              type: string
-                            language:
-                              type: string
-                            open_issues_count:
-                              type: integer
-                            owner:
-                              type: object
-                              properties:
-                                avatar_url:
-                                  type: string
-                                html_url:
-                                  type: string
-                                id:
-                                  type: integer
-                                login:
-                                  type: string
-                            pushed_at:
-                              type: string
-                            stars:
-                              type: integer
-                            topics:
-                              type: array
-                              items:
-                                type: string
-                            updated_at:
-                              type: string
-                            visibility:
-                              type: string
-                            watchers_count:
-                              type: integer
-                        added_at:
-                          type: string
+                $ref: '#/components/schemas/FavoriteRepositories'
         401:
-          description: Missing authorization token or invalid authorization token
+          $ref: '#/components/responses/UnauthorizedError'
         500:
-          description: Failed to retrieve favorite repositories
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  schemas:
+    Repository:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        archived:
+          type: boolean
+        clone_url:
+          type: string
+        created_at:
+          type: string
+        forks_count:
+          type: integer
+        html_url:
+          type: string
+        language:
+          type: string
+        open_issues_count:
+          type: integer
+        owner:
+          type: object
+          properties:
+            avatar_url:
+              type: string
+            html_url:
+              type: string
+            id:
+              type: integer
+            login:
+              type: string
+        pushed_at:
+          type: string
+        stars:
+          type: integer
+        topics:
+          type: array
+          items:
+            type: string
+        updated_at:
+          type: string
+        visibility:
+          type: string
+        watchers_count:
+          type: integer
+    FavoriteRepositories:
+      type: object
+      properties:
+        repository_id:
+          type: integer
+        repository:
+          $ref: '#/components/schemas/Repository'
+        added_at:
+          type: string
+
+  responses:
+    BadRequestError:
+      description: Bad request error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              message:
+                type: string
+                example: "Missing repository data or repository already exists in favorites"
+
+    UnauthorizedError:
+      description: Unauthorized error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              message:
+                type: string
+                example: "Missing authorization token or invalid authorization token"
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              message:
+                type: string
+                example: "Failed to add repository to favorites"
