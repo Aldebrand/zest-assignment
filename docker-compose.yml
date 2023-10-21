@@ -1,6 +1,7 @@
 version: '3.7'
 
 services:
+  # Responsible for retrieving data from Github API
   github_data_service:
     build:
       context: ./
@@ -13,21 +14,15 @@ services:
     depends_on:
       - redis
     networks:
-      - github_network
-
-  redis:
-    image: redis:latest
-    ports:
-      - "6379:6379"
-    networks:
-      - github_network
-
+      - app_network
+    
+  # Responsible for managing user's authentication
   auth_service:
     build:
       context: ./
       dockerfile: auth_service/Dockerfile
     env_file:
-      - ./env_files/auth.env
+      - ./env_files/secrets.env
     environment:
       - HOST=0.0.0.0
       - PORT=8081
@@ -35,6 +30,34 @@ services:
       - "8081:8081"
     depends_on:
       - mongodb
+    networks:
+      - app_network
+
+  # Responsible for managing user's favorites
+  favorites_service:
+    build:
+      context: ./
+      dockerfile: favorites_service/Dockerfile
+    env_file:
+      - ./env_files/secrets.env
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8082
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mongodb
+      - github_data_service
+      - auth_service
+    networks:
+      - app_network
+  
+  
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
     networks:
       - app_network
 
@@ -48,8 +71,6 @@ services:
       - app_network
 
 networks:
-  github_network:
-    driver: bridge
   app_network:
     driver: bridge
 
