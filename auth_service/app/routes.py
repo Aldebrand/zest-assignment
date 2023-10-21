@@ -23,7 +23,7 @@ def login():
     jwt_token = login_user(email, password)
 
     if not jwt_token:
-        return jsonify({'error': 'Invalid email or password'}), 401
+        return jsonify({'error': 'User does not exist or password and email do not match'}), 401
 
     return jsonify({'message': f"You've successfuly logged in", 'jwt_token': jwt_token}), 200
 
