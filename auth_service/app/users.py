@@ -1,13 +1,14 @@
 import bcrypt
 import jwt
 import os
+from flask import current_app as app
 
 from utils.users_db import save_user_to_db, get_user_from_db
 from utils.app_logging import logger
 
 # get the secret key from the environment variables
 SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
-
+JWT_ALGORITHM = app.config["JWT_ALGORITHM"]
 
 def signup_user(email, password):
     """
@@ -32,7 +33,7 @@ def signup_user(email, password):
 
     # Create a JWT token with the user ID
     user_id = str(user_id)
-    token = jwt.encode({"user_id": user_id}, SECRET_KEY, algorithm="HS256")
+    token = jwt.encode({"user_id": user_id}, SECRET_KEY, algorithm=JWT_ALGORITHM)
     logger.info(f'jwt token for user - {user_id} created')
 
     return token
@@ -56,7 +57,7 @@ def login_user(email, password):
     if bcrypt.checkpw(password.encode(), user['password']):
         # Create a JWT token with the user ID
         user_id = str(user['_id'])
-        token = jwt.encode({"user_id": user_id}, SECRET_KEY, algorithm="HS256")
+        token = jwt.encode({"user_id": user_id}, SECRET_KEY, algorithm=JWT_ALGORITHM)
         logger.info(f'jwt token for user - {user_id} created')
 
         return token
