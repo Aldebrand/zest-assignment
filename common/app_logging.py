@@ -1,12 +1,19 @@
-################################################
-# This file contains the logger configuration. #
-# While I chose to use rotating file handler   #
-# for this project, I could have also used     #
-# a logging handler that sends logs to a       #
-# database such as elasticsearch or a logging  #
-# handler that sends logs to a message queue   #
-# such as kafka.                               #
-################################################
+####################################################
+# This file encapsulates the logger configuration. #
+# A rotating file handler is employed for logging  #
+# in this project, serving as a pragmatic choice   #
+# given the time constraints. While alternative    #
+# logging handlers, like those sending logs to     #
+# databases such as Elasticsearch or message       #
+# queues like Kafka, could have been utilized to   #
+# enhance log management and analysis, the         #
+# integration of such technologies was deferred    #
+# due to the limited time available. This          #
+# approach enables a balance between functionality #
+# and development efficiency, ensuring adequate    #
+# logging capabilities for the current scope of    #
+# the project.                                     #
+####################################################
 
 
 import logging
