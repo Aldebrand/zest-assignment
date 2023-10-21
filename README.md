@@ -2,6 +2,8 @@
 
 Welcome to the GitHub Repository Manager application! This application allows users to interact with the GitHub REST API to fetch the top 100 GitHub repositories sorted by stars, save their favorite repositories, and manage them efficiently.
 
+---
+
 ## Architecture
 
 The application adopts a microservices architecture, dividing the business logic into three distinct services:
@@ -81,8 +83,6 @@ Dockerfiles have been created for each service, and a Docker Compose file is pro
 ## Submission
 
 This project is submitted as a solution to the Zest Home Assignment, following the specified guidelines and requirements. The source code and related documentation are shared via this Git repository.
-
----
 
 ## Questions or Concerns? 🤔
 
