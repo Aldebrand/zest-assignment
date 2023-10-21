@@ -37,7 +37,7 @@ services:
   favorites_service:
     build:
       context: ./
-      dockerfile: favorites_service/Dockerfile
+      dockerfile: user_favorites_service/Dockerfile
     env_file:
       - ./env_files/secrets.env
     environment:
