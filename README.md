@@ -69,9 +69,9 @@ Now, all the services should be running, and you can interact with them through 
 
 The APIs for each service are well-documented using OpenAPI specification. You can find the YAML files describing the API endpoints, request/response formats, and error messages for each service at the following paths:
 
-- **User Favorites Service API**: [user_favorites_service/user_favorites_service_api.yaml](user_favorites_service/user_favorites_service_api.yaml)
-- **GitHub Data Service API**: [github_data_service/github_data_service_api.yaml](github_data_service/github_data_service_api.yaml)
-- **Authentication Service API**: [auth_service/auth_service_api.yaml](auth_service/auth_service_api.yaml)
+- **User Favorites Service API**: [OpenAPI Spec](user_favorites_service/user_favorites_service_api.yaml)
+- **GitHub Data Service API**: [OpenAPI Spec](github_data_service/github_data_service_api.yaml)
+- **Authentication Service API**: [OpenAPI Spec](auth_service/auth_service_api.yaml)
 
 These documentation files provide a clear understanding of how to interact with each microservice and can be used to generate interactive API documentation using tools like Swagger UI or Redoc.
 
