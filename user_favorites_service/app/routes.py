@@ -3,9 +3,9 @@ import os
 from flask import Blueprint, request, jsonify, current_app as app
 
 from utils.favorites_db import get_user_favorite_repositories, add_user_favorite_repository, remove_user_favorite_repository
+from utils.app_logging import logger
 
 SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
-JWT_ALGORITHM = app.config["JWT_ALGORITHM"]
 favorite_repos_routes = Blueprint('favorite_repos_routes', __name__)
 
 
@@ -23,9 +23,11 @@ def add_favorite_repo():
         return jsonify({'error': 'Missing authorization token'}), 401
     try:
         user_id = jwt.decode(token, SECRET_KEY, algorithms=[
-                             JWT_ALGORITHM])['user_id']
-    except jwt.InvalidTokenError:
-        return jsonify({'error': 'Invalid authorization token'}), 401
+                             app.config["JWT_ALGORITHM"]])['user_id']
+    except jwt.InvalidTokenError as e:
+        logger.error(f'There was an error decoding the token: {e}')
+
+        return jsonify({'error': f'Invalid authorization token.'}), 401
 
     repo = request.json.get('repository')
 
@@ -55,12 +57,14 @@ def remove_favorite_repo():
     if not token:
         return jsonify({'error': 'Missing authorization token'}), 401
     try:
-        user_id = jwt.decode(token, 'secret', algorithms=[
-                             JWT_ALGORITHM])['user_id']
-    except jwt.InvalidTokenError:
-        return jsonify({'error': 'Invalid authorization token'}), 401
+        user_id = jwt.decode(token, SECRET_KEY, algorithms=[
+                             app.config["JWT_ALGORITHM"]])['user_id']
+    except jwt.InvalidTokenError as e:
+        logger.error(f'There was an error decoding the token: {e}')
+        
+        return jsonify({'error': f'Invalid authorization token.'}), 401
 
-    repo_id = request.args.get('repository_id')
+    repo_id = str(request.args.get('repository_id'))
 
     if not repo_id:
         return jsonify({'error': 'Missing repository ID'}), 400
@@ -90,10 +94,12 @@ def get_favorite_repos():
     if not token:
         return jsonify({'error': 'Missing authorization token'}), 401
     try:
-        user_id = jwt.decode(token, 'secret', algorithms=[
-                             JWT_ALGORITHM])['user_id']
-    except jwt.InvalidTokenError:
-        return jsonify({'error': 'Invalid authorization token'}), 401
+        user_id = jwt.decode(token, SECRET_KEY, algorithms=[
+                             app.config["JWT_ALGORITHM"]])['user_id']
+    except jwt.InvalidTokenError as e:
+        logger.error(f'There was an error decoding the token: {e}')
+
+        return jsonify({'error': f'Invalid authorization token.'}), 401
 
     favorite_repos = get_user_favorite_repositories(user_id)
 
