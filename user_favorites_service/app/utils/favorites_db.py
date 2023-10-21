@@ -31,6 +31,8 @@ def get_user_favorite_repositories(user_id):
         cursor = collection.find({'user_id': user_id})
         favorite_repositories = [{'repository_id': repository['repository_id'], 'repository:': repository['repository_data'], 'added_at': repository['added_at']}
                                  for repository in cursor]
+        logger.info(
+            f"Retrieved user {user_id}'s favorite repositories. Count: {len(favorite_repositories)}")
 
         return favorite_repositories
     except Exception as e:
@@ -63,7 +65,7 @@ def add_user_favorite_repository(user_id, repository):
         db = get_database(client, db_name)
         collection = get_collection(db, favorites_collection_name)
 
-        repository_id = repository.pop('id', None)
+        repository_id = str(repository.pop('id', None))
 
         # Check if the repository already exists in the user's favorites.
         existing_favorite = collection.find_one(
