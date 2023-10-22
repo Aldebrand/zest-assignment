@@ -133,6 +133,9 @@ Certainly! Here's the refined version of your notes formatted in Markdown:
 2. **Testing**:
    - Manual testing was the primary mode of verification due to the time constraints of this exercise. While every effort has been made to ensure the application operates correctly, should any issues arise, I am readily available to address them. The lack of automated testing in this instance is acknowledged, and under different circumstances, a comprehensive suite of tests covering all services and applications would be implemented to guarantee reliability and correctness.
 
+3. **Secret Managment**:
+    - The secrets used in this project are stored in environment files. However, in a production environment, a more robust secret management solution would be employed. A tool like HashiCorp Vault would be ideal for this purpose as it provides a secure and centralized platform for storing and accessing secrets. Alternatively, Docker secrets could also be employed to provide a level of security and management to sensitive information. 
+
 Your understanding and consideration regarding these aspects are greatly appreciated. This project serves as a testament to what can be achieved within a limited timeframe while also highlighting areas for further enhancement in a more expansive development window.
 
 ## Questions or Concerns? 🤔
