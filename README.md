@@ -123,8 +123,6 @@ Dockerfiles have been created for each service, and a Docker Compose file is pro
 
 This project is submitted as a solution to the Zest Home Assignment, following the specified guidelines and requirements. The source code and related documentation are shared via this Git repository.
 
-Certainly! Here's the refined version of your notes formatted in Markdown:
-
 ## Considerations:
 
 1. **Logging Infrastructure**:
