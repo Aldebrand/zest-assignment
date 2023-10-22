@@ -134,6 +134,9 @@ This project is submitted as a solution to the Zest Home Assignment, following t
 3. **Secret Managment**:
     - The secrets used in this project are stored in environment files. However, in a production environment, a more robust secret management solution would be employed. A tool like HashiCorp Vault would be ideal for this purpose as it provides a secure and centralized platform for storing and accessing secrets. Alternatively, Docker secrets could also be employed to provide a level of security and management to sensitive information. 
 
+4. **API Gateway**:
+    - In this project, the services are exposed directly to the user. However, in a production environment, an API gateway would be utilized to provide a unified interface for the services. This would allow for a more streamlined and secure user experience, with the API gateway handling authentication and authorization, as well as providing a single point of entry for the services.
+
 Your understanding and consideration regarding these aspects are greatly appreciated. This project serves as a testament to what can be achieved within a limited timeframe while also highlighting areas for further enhancement in a more expansive development window.
 
 ## Questions or Concerns? 🤔
